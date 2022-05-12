@@ -6,33 +6,68 @@ function Auth(props) {
     const [userType, setUserType] = useState('Login')
     const [reset, setReset] = useState(false)
 
-    const handletLogin = () => {
+    const handletLogin = (values) => {
+        alert(JSON.stringify(values, null, 2));
 
     }
 
-    const handleSignup = () => {
+    const handleSignup = (values) => {
+        // alert(JSON.stringify(values, null, 2));
+        let data = JSON.parse(localStorage.getItem("users"));
+        console.log(data);
+
+        if (data === null) {
+            localStorage.setItem("users", JSON.stringify([values]))
+        } else {
+            data.push(values);
+            localStorage.setItem("users", JSON.stringify(data))
+        }
 
     }
 
-    let Login = {
-        email: yup.string().required('enter email').email('enter valid email'),
+    let login_set = {
+        email: yup.string().required('Please enter email').email('Please enter valid email'),
         password: yup.string().required('please enter password'),
     }
 
-    let loginschema = yup.object().shape(Login)
+    let signup_set = {
+        name: yup.string().required('please enter name'),
+        email: yup.string().required('Please enter email').email('Please enter valid email'),
+        password: yup.string().required('please enter password'),
+    }
 
-    const formik = useFormik({
-        initialValues: {
 
+    let schema, initVal;
+    if (userType === "Login") {
+        schema = yup.object().shape(login_set);
+        initVal = {
             email: '',
             password: ''
-        },
-
-        validationSchema: loginschema,
-        onSubmit: values => {
-            alert(JSON.stringify(values, null, 2));
         }
-    });
+    } else if (userType === "Signup") {
+        schema = yup.object().shape(signup_set);
+        initVal = {
+            name: '',
+            email: '',
+            password: ''
+        }
+    }
+
+    const formik = useFormik({
+        initialValues: initVal,
+        validationSchema: schema,
+        onSubmit: (values, { resetForm }) => {
+            if (userType === "Login") {
+                handletLogin(values)
+
+            } else if (userType === "Signup") {
+                handleSignup(values)
+            }
+            resetForm();
+        }
+    })
+
+
     console.log(formik.errors);
 
     return (
@@ -53,60 +88,103 @@ function Auth(props) {
                                     userType === 'Login' ? null
                                         :
                                         <div className="col-md-7 form-group">
-                                            <input type="text" name="name" className="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                                            <input
+                                                type="text"
+                                                name="name"
+                                                className="form-control"
+                                                id="name"
+                                                placeholder="Your Name"
+                                                onChange={formik.handleChange}
+                                                value={formik.values.name}
+                                                onBlur={formik.handleBlur}
+
+                                            />
+
+                                            {
+                                                formik.errors.name && formik.touched.name ? <p>{formik.errors.name}</p> : ''
+                                            }
+
                                             <div className="validate" />
                                         </div>
                                 }
-                                {/* <form method="post"> */}
+
+
+
                                 <div className="col-md-7 form-group mt-3 mt-md-0">
                                     <input
                                         type="text"
                                         className="form-control"
                                         name="email"
                                         id="email"
+                                        placeholder="Please enter email"
                                         onChange={formik.handleChange}
-                                        value={formik.values.email} />
+                                        value={formik.values.email}
+                                        onBlur={formik.handleBlur}
+                                    />
+                                    {
+                                        formik.errors.email && formik.touched.email ? <p>{formik.errors.email}</p> : ''
+                                    }
+
                                     <div className="validate" />
                                 </div>
                                 <div className="col-md-7 form-group mt-3 mt-md-0">
-                                    <input 
-                                    type="password" 
-                                    className="form-control" 
-                                    name="password" 
-                                    id="password" 
-                                    placeholder="Your Password" 
-                                    onChange={formik.handleChange}
-                                    value={formik.values.password}
-                                     />
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        name="password"
+                                        id="password"
+                                        placeholder="Your Password"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.password}
+                                        onBlur={formik.handleBlur}
+                                    />
+                                    {
+                                        formik.errors.password && formik.touched.password ? <p>{formik.errors.password}</p> : ''
+                                    }
+
                                     <div className="validate" />
                                 </div>
-                                <div className="col-md-7 form-group mt-3 mt-md-0">
-                                    <input type="submit" className="form-control" name="submit" id="submit" />
+                                {/* <div className="col-md-7 form-group mt-3 mt-md-0">
+                                    <input type="submit" className="form-control" name="submit" id="submit" />+--
                                     <div className="validate" />
 
-                                </div>
+                                </div> */}
+                                {
+                                    userType === 'Login' ?
+                                        <div className='text-center buttons'>
+                                            <button type='submit'>login</button>
+                                        </div>
+                                        :
+                                        <div className='text-center'>
+                                            <button type='submit'>Signup</button>
+                                        </div>
+                                }
+                                {
+                                    userType === 'Login' ?
+                                        <div className='text-center buttons'>
+                                            <span >Create New Account</span><a onClick={() => setUserType('Signup')}>Signup</a>
+                                        </div>
+                                        :
+                                        <div className='text-center'>
+                                            <span>Already have Account</span><a onClick={() => setUserType('Login')}>Login</a>
+                                        </div>
+                                }
+
                             </div>
                         </Form>
                     </Formik>
-
-                    {
-                        userType === 'Login' ?
-                            <div className='text-center buttons'>
-                                <span>Create New Account</span><button onClick={() => setUserType('Signup')}>Signup</button>
-                            </div>
-                            :
-                            <div className='text-center'>
-                                <span>Already have Account</span><button onClick={() => setUserType('Login')}>Login</button>
-                            </div>
-                    }
                     <div>
                     </div>
                 </div>
             </div>
 
-        
+
         </section >
     );
 }
+
+
+
+
 
 export default Auth;
