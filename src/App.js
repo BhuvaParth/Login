@@ -14,6 +14,7 @@ import Make_Appointment from './Containers/Make_Appointment/Make_Appointment';
 import Auth from './Containers/Auth/Auth';
 import Counter from './Containers/Counter/Counter';
 import Medicine from './Containers/Medicine/Medicine';
+import Drawer from './Containers/Drawer/Drawer';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
          <Route exact path={"/About"} component={About} />
          <Route exact path={"/Contact"} component={Contact} />
          <Route exact path={"/Medicine"} component={Medicine} />
+         <Route exact path={"/Drawer"} component={Drawer} />
          <Route exact path={"/Auth"} component={Auth} />
          <Route exact path={"/Make_Appointment"} component={Make_Appointment} />
 
