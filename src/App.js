@@ -9,12 +9,14 @@ import Departments from "./Containers/Departments/Departments";
 import Doctors from './Containers/Doctors/Doctors';
 import About from './Containers/About/About';
 import Contact from './Containers/Contact/Contact';
-
 import Make_Appointment from './Containers/Make_Appointment/Make_Appointment';
 import Auth from './Containers/Auth/Auth';
 import Counter from './Containers/Counter/Counter';
+import Product from './Containers/Product/Product';
 import Medicine from './Containers/Medicine/Medicine';
-import Drawer from './Containers/Drawer/Drawer';
+import { MedicationOutlined, ProductionQuantityLimits } from '@mui/icons-material';
+import PublicRoute from './Containers/Route/PublicRoute';
+import PraivateRoute from './Containers/Route/PraivateRoute';
 
 function App() {
   return (
@@ -22,17 +24,17 @@ function App() {
        <Header />
        {/* <Counter /> */}
        <Switch>
-         <Route exact path={"/"} component={Home} />
-         <Route exact path={"/Departments"} component={Departments} />
-         <Route exact path={"/Doctors"} component={Doctors} />
-         <Route exact path={"/About"} component={About} />
-         <Route exact path={"/Contact"} component={Contact} />
-         <Route exact path={"/Medicine"} component={Medicine} />
-         <Route exact path={"/Drawer"} component={Drawer} />
-         <Route exact path={"/Auth"} component={Auth} />
+         <PublicRoute exact path={"/"} component={Home} />
+         <PublicRoute exact path={"/Departments"} component={Departments} />
+         <PublicRoute exact path={"/Doctors"} component={Doctors} />
+         <PublicRoute exact path={"/About"} component={About} />
+         <PublicRoute exact path={"/Contact"} component={Contact} />
+         <PraivateRoute exact path={"/Product"} component={Product} />
+         <PraivateRoute exact path={"/Medicine"} component={Medicine} />
+         <PublicRoute restricted={true} exact path={"/Auth"} component={Auth} />
          <Route exact path={"/Make_Appointment"} component={Make_Appointment} />
 
-       
+
        </Switch>
        <Footer />
          

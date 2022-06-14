@@ -42,11 +42,11 @@ function Header(props) {
 
               </li>
               <li>
-                <NavLink exact to={"/Medicine"} className="nav-link scrollto ">Medicine</NavLink>
+                <NavLink exact to={"/Product"} className="nav-link scrollto ">Product</NavLink>
 
               </li>
               <li>
-                <NavLink exact to={"/Drawer"} className="nav-link scrollto">Drawer</NavLink>
+                <NavLink exact to={"/Medicine"} className="nav-link scrollto">Medicine</NavLink>
               </li>
               <li>
                 <NavLink exact to={"/Contact"} className="nav-link scrollto">Contact</NavLink>
