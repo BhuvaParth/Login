@@ -32,7 +32,7 @@ function App() {
          <PraivateRoute exact path={"/Product"} component={Product} />
          <PraivateRoute exact path={"/Medicine"} component={Medicine} />
          <PublicRoute restricted={true} exact path={"/Auth"} component={Auth} />
-         <Route exact path={"/Make_Appointment"} component={Make_Appointment} />
+         <PraivateRoute exact path={"/Make_Appointment"} component={Make_Appointment} />
 
 
        </Switch>

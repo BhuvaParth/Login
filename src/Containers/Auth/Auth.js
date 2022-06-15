@@ -16,7 +16,7 @@ function Auth1(props) {
             data.push(values)
             localStorage.setItem("users", JSON.stringify(data))
         }
-        sessionStorage.setItem("users","123456")
+        sessionStorage.setItem("users", "123456")
     }
 
     const handleSignup = (values) => {
