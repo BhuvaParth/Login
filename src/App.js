@@ -9,14 +9,13 @@ import Departments from "./Containers/Departments/Departments";
 import Doctors from './Containers/Doctors/Doctors';
 import About from './Containers/About/About';
 import Contact from './Containers/Contact/Contact';
-import Make_Appointment from './Containers/Make_Appointment/Make_Appointment';
 import Auth from './Containers/Auth/Auth';
-import Counter from './Containers/Counter/Counter';
-import Product from './Containers/Product/Product';
+// import Counter from './Containers/Counter/Counter';
 import Medicine from './Containers/Medicine/Medicine';
-import { MedicationOutlined, ProductionQuantityLimits } from '@mui/icons-material';
 import PublicRoute from './Containers/Route/PublicRoute';
-import PraivateRoute from './Containers/Route/PraivateRoute';
+import PrivetRoute from './Containers/Route/PrivetRoute';
+import ListAppointment from './Containers/Make_Appointment/ListAppointment';
+import Appointment from './Containers/Make_Appointment/Appointment';
 
 function App() {
   return (
@@ -29,12 +28,13 @@ function App() {
          <PublicRoute exact path={"/Doctors"} component={Doctors} />
          <PublicRoute exact path={"/About"} component={About} />
          <PublicRoute exact path={"/Contact"} component={Contact} />
-         <PraivateRoute exact path={"/Product"} component={Product} />
-         <PraivateRoute exact path={"/Medicine"} component={Medicine} />
+         <PrivetRoute exact path={"/Medicine"} component={Medicine} />
          <PublicRoute restricted={true} exact path={"/Auth"} component={Auth} />
-         <PraivateRoute exact path={"/Make_Appointment"} component={Make_Appointment} />
+         {/* <PublicRoute exact path={"/Appointment"} component={Appointment} /> */}
+         < PrivetRoute  path={"/Appointment"} component={Appointment} />
+         < PrivetRoute exact path={"/ListAppointment"} component={ListAppointment} />
 
-
+       
        </Switch>
        <Footer />
          

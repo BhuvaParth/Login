@@ -42,11 +42,8 @@ function Header(props) {
 
               </li>
               <li>
-                <NavLink exact to={"/Product"} className="nav-link scrollto ">Product</NavLink>
+                <NavLink exact to={"/Medicine"} className="nav-link scrollto ">Medicine</NavLink>
 
-              </li>
-              <li>
-                <NavLink exact to={"/Medicine"} className="nav-link scrollto">Medicine</NavLink>
               </li>
               <li>
                 <NavLink exact to={"/Contact"} className="nav-link scrollto">Contact</NavLink>
@@ -55,9 +52,10 @@ function Header(props) {
             <i className="bi bi-list mobile-nav-toggle" />
           </nav>
           
-
-          <NavLink exact to={"/Make_Appointment "} className="appointment-btn scrollto">Make an appointment</NavLink>
-
+          <a href="#" className="appointment-btn scrollto">
+          <NavLink exact to={"/Appointment"}>Make an appointment</NavLink>
+          </a>
+          
 
           <a href="#" className="appointment-btn scrollto">
             <NavLink exact to={"/Auth"} className="d-none d-md-inline">Login/Signup</NavLink>

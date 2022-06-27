@@ -1,0 +1,278 @@
+import React, { useEffect, useState } from "react";
+import { NavLink, useHistory } from "react-router-dom";
+import { boolean } from "yup";
+// import {form} from 'reactstrap'
+import InputBox from "../../Components/InputBox/InputBox";
+import * as yup from "yup";
+import { Form, Formik, useFormik } from "formik";
+
+function Appointment(props) {
+  const [update, setUpdate] = useState(false);
+
+  const historydata = useHistory();
+
+  let Make_Appointment = {
+    name: yup.string().required("Enter Name"),
+    email: yup.string().required("Please Enter Email"),
+    phone: yup.string().required("Please Enter Phone"),
+    date: yup.string().required("Please Enter Date"),
+    department: yup.string().required("Select Enter Department"),
+    message: yup.string().required("Please Enter Message"),
+  };
+
+
+  const handleUpdate = (udata) => {
+
+   let datalocal= JSON.parse(localStorage.getItem("Appointment"));
+  let finaldata = datalocal.map((d) => {
+    if (d.id === udata.id){
+      return udata;
+    }else{
+      return d;
+    }
+  })
+  localStorage.setItem("Appointment", JSON.stringify(finaldata));
+  historydata.push("ListAppointment")
+  formik.resetForm();
+  setUpdate(false);
+
+  }
+
+
+  let schema = yup.object().shape(Make_Appointment);
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      phone: "",
+      date: "",
+      department: "",
+      message: "",
+    },
+
+
+
+    validationSchema: schema,
+    onSubmit: (values) => {
+
+      if (update) {
+        handleUpdate(values)
+        
+      }else{
+      // alert(JSON.stringify(values, null, 2));
+
+      const {
+        name,
+        email,
+        phone,
+        date,
+        department,
+        message
+      } = values
+
+
+      const apt = {
+        id: Math.floor(Math.random() * 1000),
+        name,
+        email,
+        phone,
+        date,
+        department,
+        message
+      }
+
+
+      let bookdata = JSON.parse(localStorage.getItem("Appointment"));
+
+      if (bookdata === null) {
+        localStorage.setItem("Appointment", JSON.stringify([apt]));
+      } else {
+        bookdata.push(apt)
+        localStorage.setItem("Appointment", JSON.stringify(bookdata));
+      }
+
+
+      historydata.push("/ListAppointment");
+     
+      
+    }
+
+  }
+
+  });
+
+
+
+
+
+
+  const { handleChange, errors, handleBlur, handleSubmit, touched, values } = formik;
+
+  useEffect(
+    () => {
+
+      let dData = JSON.parse(localStorage.getItem("Appointment"));
+      // console.log(dData);
+      console.log(props.location.state);
+      if (dData !== null && props.location.state) {
+        let filterdata = dData.filter((d) => d.id === props.location.state.id);
+
+        console.log(filterdata);
+        formik.setValues(filterdata[0])
+        setUpdate(true)
+      }
+    },
+  
+    [])
+
+
+  return (
+    <section id="appointment" className="appointment">
+      <div className="container">
+        <div className="section-title">
+          <h2>Make an Appointment</h2>
+          <p>
+            Aenean enim orci, suscipit vitae sodales ac, semper in ex. Nunc
+            aliquam eget nibh eu euismod. Donec dapibus blandit quam volutpat
+            sollicitudin. Fusce tincidunt sit amet ex in volutpat. Donec lacinia
+            finibus tortor. Curabitur luctus eleifend odio. Phasellus placerat
+            mi et suscipit pulvinar.
+          </p>
+        </div>
+        <div className="row text-center">
+          <div className="col-6">
+            <NavLink activeClassName="aptnav" to={"/Appointment"}>
+              Make_Appointment
+            </NavLink>
+          </div>
+          <div className="col-6">
+            <NavLink activeClassName="aptnav" to={"/ListAppointment"}>
+              List_Appointment
+            </NavLink>
+          </div>
+        </div>
+        <Formik values={formik}>
+          <Form onSubmit={handleSubmit} className="php-email-form">
+            <div className="row">
+              <div className="col-md-4 form-group">
+                <InputBox
+                  type="text"
+                  name="name"
+                  className="form-control"
+                  id="name"
+                  value={values.name}
+                  placeholder="Your Name"
+                  errors={Boolean(errors.name && touched.name)}
+                  errormessage={errors.name}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <div className="validate" />
+              </div>
+              <div className="col-md-4 form-group mt-3 mt-md-0">
+                <InputBox
+                  type="email"
+                  className="form-control"
+                  name="email"
+                  id="email"
+                  value={values.email}
+                  placeholder="Your Email"
+                  errors={Boolean(errors.email && touched.email)}
+                  errormessage={errors.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <div className="validate" />
+              </div>
+              <div className="col-md-4 form-group mt-3 mt-md-0">
+                <InputBox
+                  type="tel"
+                  className="form-control"
+                  name="phone"
+                  id="phone"
+                  value={values.phone}
+                  placeholder="Your Phone"
+                  errors={Boolean(errors.phone && touched.phone)}
+                  errormessage={errors.phone}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <div className="validate" />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-4 form-group mt-3">
+                <InputBox
+                  type="datetime"
+                  name="date"
+                  className="form-control datepicker"
+                  id="date"
+                  value={values.date}
+                  placeholder="Appointment Date"
+                  errors={Boolean(errors.date && touched.date)}
+                  errormessage={errors.date}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <div className="validate" />
+              </div>
+              <div className="col-md-4 form-group mt-3">
+                <InputBox
+                  type="select"
+                  name="department"
+                  id="department"
+                  value={values.department}
+                  className="form-select"
+                  errors={Boolean(errors.department && touched.department)}
+                  errormessage={errors.department}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                >
+                  <option value>Select Department</option>
+                  <option value="Department 1">Department 1</option>
+                  <option value="Department 2">Department 2</option>
+                  <option value="Department 3">Department 3</option>
+                </InputBox>
+                <div className="validate" />
+              </div>
+            </div>
+            <div className="form-group mt-3">
+              <InputBox
+                textarea
+                className="form-control"
+                name="message"
+                rows={5}
+                placeholder="Message (Optional)"
+                defaultValue={""}
+                value={values.message}
+                errors={Boolean(errors.message && touched.message)}
+                errormessage={errors.message}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              <div className="validate" />
+            </div>
+            <div className="mb-3">
+              <div className="loading">Loading</div>
+              <div className="errors-message" />
+              <div className="sent-message">
+                Your appointment request has been sent successfully. Thank you!
+              </div>
+            </div>
+            <div className="text-center">
+              {
+                update ? 
+                  <button type="submit" > Update</button>
+                :
+                <button type="submit">Make an Appointment</button> 
+              }
+              
+            </div>
+          </Form>
+        </Formik>
+      </div>
+    </section>
+  );
+}
+
+export default Appointment;

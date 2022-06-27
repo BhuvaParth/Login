@@ -1,7 +1,7 @@
-export const isLogin = () => {
-    if (sessionStorage.getItem("users","123456")) {
+export const isLogin =() => {
+    if(sessionStorage.getItem("users" ,"12345")){
         return true
-    } else {
+    }else{
         return false
     }
 }
